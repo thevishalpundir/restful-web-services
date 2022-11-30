@@ -1,4 +1,4 @@
-package com.vishal.microservices.restfulwebservices.dto;
+package com.vishal.microservices.restfulwebservices.helloworld;
 
 public class HelloWorldBean {
 	public String getMessage() {

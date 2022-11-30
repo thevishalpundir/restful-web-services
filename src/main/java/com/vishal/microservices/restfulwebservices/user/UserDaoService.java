@@ -27,6 +27,16 @@ public class UserDaoService {
 		Optional<User> userOptional = users.stream().filter(x -> x.getId().equals(id)).findFirst();
 		return userOptional.isPresent() ? userOptional.get() : null;
 	}
+	
+	public User deleteOne(Integer id) {
+		Optional<User> userOptional = users.stream().filter(x -> x.getId().equals(id)).findFirst();
+		if(userOptional.isPresent()) {
+			users.remove(userOptional.get());
+			return userOptional.get();
+		}else {
+			return null;
+		}
+	}
 
 	public User saveUser(User user) {
 		user.setId(userCount++);
