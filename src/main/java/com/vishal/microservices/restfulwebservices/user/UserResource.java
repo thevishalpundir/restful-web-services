@@ -2,7 +2,9 @@ package com.vishal.microservices.restfulwebservices.user;
 
 import java.net.URI;
 import java.util.List;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +31,15 @@ public class UserResource {
 	}
 
 	@GetMapping("/users/{id}")
-	public User getUser(@PathVariable Integer id) {
+	public EntityModel<User> getUser(@PathVariable Integer id) {
 		User user = userDaoService.findOne(id);
 		if(user == null) {
 			throw new UserNotFoundException("user not found");
-		}else {
-			return user;
 		}
+		EntityModel<User> entityModel = EntityModel.of(user);
+		WebMvcLinkBuilder builder = linkTo(methodOn(this.getClass()).getAllUsers());
+		entityModel.add(builder.withRel("all-users"));
+		return entityModel;
 	}
 
 	@PostMapping("/users")
