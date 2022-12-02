@@ -30,11 +30,7 @@ public class UserJPAResource {
 
 	private PostRepository postRepository;
 
-	private UserDaoService userDaoService;
-
-	public UserJPAResource(UserDaoService userDaoService, UserRepository userRepository,
-			PostRepository postRepository) {
-		this.userDaoService = userDaoService;
+	public UserJPAResource(UserRepository userRepository, PostRepository postRepository) {
 		this.userRepository = userRepository;
 		this.postRepository = postRepository;
 	}
@@ -91,22 +87,17 @@ public class UserJPAResource {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPost.getId())
 				.toUri();
 		return ResponseEntity.created(location).build();
-		
 
 	}
-	
+
 	@GetMapping("/jpa/users/{id}/posts/{postId}")
-	public ResponseEntity<Object> getPostForUser(@PathVariable Integer id, @PathVariable Integer postId, @Valid @RequestBody Post post) {
-		Optional<User> user = userRepository.findById(id);
-		if (user.isEmpty()) {
-			throw new UserNotFoundException("user not found");
+	public Post getPostForUser(@PathVariable Integer id, @PathVariable Integer postId, @Valid @RequestBody Post post) {
+		Optional<Post> postOptional = postRepository.findById(postId);
+		if (postOptional.isPresent()) {
+			return postOptional.get();
+		} else {
+			throw new UserNotFoundException("post is not found");
 		}
-		post.setUser(user.get());
-		Post savedPost = postRepository.save(post);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPost.getId())
-				.toUri();
-		return ResponseEntity.created(location).build();
-		
 
 	}
 

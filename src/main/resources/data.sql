@@ -9,3 +9,9 @@ values(1002, current_date(), 'vishag pundir');
 
 insert into post(id, description, user_id)
 values(1002333, 'i want to learn aws', 10002); 
+
+insert into post(id, description, user_id)
+values(1002334, 'i want to learn aws', 1001); 
+
+insert into post(id, description, user_id)
+values(1002335, 'i want to learn aws', 1002); 
